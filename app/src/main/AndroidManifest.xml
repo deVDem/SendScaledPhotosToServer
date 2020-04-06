@@ -32,6 +32,8 @@
         <activity
             android:name=".activites.LoginActivity"
             android:theme="@style/FirstTheme" />
+        <activity android:name=".activites.GroupListActivity" />
+        <activity android:name=".activites.UploadPhotosActivity" />
     </application>
 
 </manifest>

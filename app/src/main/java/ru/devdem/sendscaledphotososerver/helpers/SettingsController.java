@@ -3,22 +3,28 @@ package ru.devdem.sendscaledphotososerver.helpers;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import org.json.JSONObject;
+
 import ru.devdem.sendscaledphotososerver.helpers.objects.User;
 
 public class SettingsController {
     private Context mContext;
     private static SharedPreferences mSettings;
     private static SharedPreferences mAccountData;
+    private static SharedPreferences mGroupData;
 
 
     public static SettingsController getInstance(Context context) {
         return new SettingsController(context);
     }
+
     SettingsController(Context context) {
-        mSettings=context.getSharedPreferences("settings", Context.MODE_PRIVATE);
-        mAccountData=context.getSharedPreferences("account", Context.MODE_PRIVATE);
-        mContext=context;
+        mSettings = context.getSharedPreferences("settings", Context.MODE_PRIVATE);
+        mAccountData = context.getSharedPreferences("account", Context.MODE_PRIVATE);
+        mGroupData = context.getSharedPreferences("group", Context.MODE_PRIVATE);
+        mContext = context;
     }
+
     public boolean isFirst() {
         return mSettings.getBoolean("first", true);
     }
@@ -37,6 +43,17 @@ public class SettingsController {
         editor.apply();
     }
 
+    public void updateGroupData(JSONObject data) {
+        try {
+            mGroupData.edit()
+                    .putString("group", data.getString("id"))
+                    .putString("group_name", data.getString("name"))
+                    .apply();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public User loadUser() {
         User user = new User();
         user.setId(mAccountData.getInt("id", 0));
@@ -53,5 +70,14 @@ public class SettingsController {
 
     public void setFirst(boolean b) {
         mSettings.edit().putBoolean("first", b).apply();
+    }
+
+    public void clearAccount() {
+        mAccountData.edit().clear().apply();
+        mSettings.edit().putBoolean("first", true).apply();
+    }
+
+    public void clearGroup() {
+        mGroupData.edit().clear().apply();
     }
 }

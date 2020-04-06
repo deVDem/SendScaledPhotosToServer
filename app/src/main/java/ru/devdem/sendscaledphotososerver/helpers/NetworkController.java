@@ -20,6 +20,9 @@ public class NetworkController {
     private String URL_RULES = "/rules/get.php";
     private String URL_LOGIN = "/accounts/login.php";
     private String URL_REGISTER = "/accounts/register.php";
+    private String URL_GROUPS_GET = "/groups/get.php";
+    private String URL_ACCOUNT_JOIN = "/accounts/join.php";
+    private String URL_FILES_INFO = "/files/info.php";
     private static RequestQueue queue;
 
     public static NetworkController getNetworkController() {
@@ -36,6 +39,9 @@ public class NetworkController {
         URL_RULES = URL_ROOT + URL_RULES;
         URL_LOGIN = URL_ROOT + URL_LOGIN;
         URL_REGISTER = URL_ROOT + URL_REGISTER;
+        URL_GROUPS_GET = URL_ROOT + URL_GROUPS_GET;
+        URL_ACCOUNT_JOIN = URL_ROOT + URL_ACCOUNT_JOIN;
+        URL_FILES_INFO = URL_ROOT + URL_FILES_INFO;
     }
 
     public void login(Context context, Response.Listener<String> listener, Response.ErrorListener errorListener, String login, String password) {
@@ -55,6 +61,17 @@ public class NetworkController {
         goSend(context, listener, errorListener, URL_REGISTER, map);
     }
 
+    public void getGroups(Context context, Response.Listener<String> listener, Response.ErrorListener errorListener) {
+        Map<String, String> map = new HashMap<>();
+        goSend(context, listener, errorListener, URL_GROUPS_GET, map);
+    }
+
+    public void joinToGroup(Context context, Response.Listener<String> listener, Response.ErrorListener errorListener, String id, String token) {
+        Map<String, String> map = new HashMap<>();
+        map.put("group_id", id);
+        map.put("token", token);
+        goSend(context, listener, errorListener, URL_ACCOUNT_JOIN, map);
+    }
 
     private Response.ErrorListener getErrorListener(Context context) {
         return error -> {
@@ -76,6 +93,12 @@ public class NetworkController {
         SendRequest sendRequest = new SendRequest(listener, errorListener, URL, map);
         if (queue == null) queue = Volley.newRequestQueue(context);
         queue.add(sendRequest);
+    }
+
+    public void getFilesInfo(Context context, Response.Listener<String> listener, Response.ErrorListener errorListener, String token) {
+        Map<String, String> map = new HashMap<>();
+        map.put("token", token);
+        goSend(context, listener, errorListener, URL_FILES_INFO, map);
     }
 
     private static class SendRequest extends StringRequest {
