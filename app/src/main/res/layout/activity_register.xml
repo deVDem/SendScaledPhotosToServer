@@ -76,6 +76,16 @@
                 android:selectAllOnFocus="true" />
 
             <CheckBox
+                android:id="@+id/spam"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="24dp"
+                android:text="Я согласен на рассылку новостей на свой почтовый адрес Email" />
+
+            <CheckBox
+                android:id="@+id/agree"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -84,18 +94,27 @@
                 android:text="Я прочитал правила использования и согласен их исполнять" />
 
             <Button
-                android:id="@+id/btnLogin"
+                android:id="@+id/btnRegister"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
                 android:layout_marginStart="48dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="48dp"
-                android:layout_marginBottom="64dp"
                 android:backgroundTint="#f22"
                 android:enabled="false"
-                android:text="Войти"
+                android:text="Зарегистрироваться"
                 android:textColor="#fff" />
+
+            <TextView
+                android:id="@+id/status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="48dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="48dp"
+                android:layout_marginBottom="64dp"
+                tools:text="status_text" />
         </LinearLayout>
     </ScrollView>
 

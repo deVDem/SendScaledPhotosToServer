@@ -19,6 +19,7 @@ public class NetworkController {
     private static NetworkController sNetworkController;
     private String URL_RULES = "/rules/get.php";
     private String URL_LOGIN = "/accounts/login.php";
+    private String URL_REGISTER = "/accounts/register.php";
     private static RequestQueue queue;
 
     public static NetworkController getNetworkController() {
@@ -34,6 +35,7 @@ public class NetworkController {
         String URL_ROOT = "https://api.devdem.ru/apps/send/v/" + BuildConfig.VERSION_CODE;
         URL_RULES = URL_ROOT + URL_RULES;
         URL_LOGIN = URL_ROOT + URL_LOGIN;
+        URL_REGISTER = URL_ROOT + URL_REGISTER;
     }
 
     public void login(Context context, Response.Listener<String> listener, Response.ErrorListener errorListener, String login, String password) {
@@ -41,6 +43,16 @@ public class NetworkController {
         map.put("login", login);
         map.put("password", password);
         goSend(context, listener, errorListener, URL_LOGIN, map);
+    }
+
+    public void register(Context context, Response.Listener<String> listener, Response.ErrorListener errorListener, String login, String name, String email, String password, String spam) {
+        Map<String, String> map = new HashMap<>();
+        map.put("login", login);
+        map.put("name", name);
+        map.put("email", email);
+        map.put("password", password);
+        map.put("spam", spam);
+        goSend(context, listener, errorListener, URL_REGISTER, map);
     }
 
 
