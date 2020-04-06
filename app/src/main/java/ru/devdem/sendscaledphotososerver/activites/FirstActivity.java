@@ -26,5 +26,10 @@ public class FirstActivity extends AppCompatActivity {
             startActivity(new Intent(this, RegisterActivity.class));
             finish();
         });
+        Button btnLogin = view.findViewById(R.id.btnLogin);
+        btnLogin.setOnClickListener(v -> {
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+        });
     }
 }

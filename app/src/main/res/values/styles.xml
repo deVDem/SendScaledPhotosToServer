@@ -18,10 +18,10 @@
     </style>
 
     <style name="StartTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:foreground">@drawable/ic_launcher_foreground</item>
-        <item name="android:foregroundTint">#808080</item>
+        <item name="android:src">@mipmap/ic_launcher</item>
+        <item name="android:backgroundTint">#808080</item>
+        <item name="android:foreground">@drawable/launcher_foreground</item>
         <item name="android:foregroundGravity">center</item>
-        <item name="android:foregroundTintMode">screen</item>
     </style>
 
 </resources>
