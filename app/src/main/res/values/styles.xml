@@ -13,7 +13,6 @@
         <item name="colorPrimary">#fff</item>
         <item name="colorPrimaryDark">#fff</item>
         <item name="colorAccent">#f44</item>
-        <item name="android:textColor">#222</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
