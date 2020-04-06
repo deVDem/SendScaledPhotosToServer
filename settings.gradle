@@ -1,0 +1,2 @@
+rootProject.name='Send Scaled Photos To Server'
+include ':app'
