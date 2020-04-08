@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">КЭП: Отправщик фотографий на сервер</string>
+    <string-array name="lessons">
+        <item>Выберите предмет</item>
+    </string-array>
 </resources>

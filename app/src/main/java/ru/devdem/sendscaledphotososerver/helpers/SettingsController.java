@@ -25,6 +25,14 @@ public class SettingsController {
         mContext = context;
     }
 
+    public void saveLastQuality(int quality) {
+        mSettings.edit().putInt("quality", quality).apply();
+    }
+
+    public int getLastQuality() {
+        return mSettings.getInt("quality", 2);
+    }
+
     public boolean isFirst() {
         return mSettings.getBoolean("first", true);
     }

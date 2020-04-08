@@ -30,10 +30,6 @@ public class NetworkController {
         return sNetworkController;
     }
 
-    public void getRulesInfo(Context context, Response.Listener<String> listener) {
-        goSend(context, listener, getErrorListener(context), URL_RULES, new HashMap<>());
-    }
-
     private NetworkController() {
         String URL_ROOT = "https://api.devdem.ru/apps/send/v/" + BuildConfig.VERSION_CODE;
         URL_RULES = URL_ROOT + URL_RULES;
@@ -42,6 +38,10 @@ public class NetworkController {
         URL_GROUPS_GET = URL_ROOT + URL_GROUPS_GET;
         URL_ACCOUNT_JOIN = URL_ROOT + URL_ACCOUNT_JOIN;
         URL_FILES_INFO = URL_ROOT + URL_FILES_INFO;
+    }
+
+    public void getRulesInfo(Context context, Response.Listener<String> listener) {
+        goSend(context, listener, getErrorListener(context), URL_RULES, new HashMap<>());
     }
 
     public void login(Context context, Response.Listener<String> listener, Response.ErrorListener errorListener, String login, String password) {
@@ -73,6 +73,12 @@ public class NetworkController {
         goSend(context, listener, errorListener, URL_ACCOUNT_JOIN, map);
     }
 
+    public void getFilesInfo(Context context, Response.Listener<String> listener, Response.ErrorListener errorListener, String token) {
+        Map<String, String> map = new HashMap<>();
+        map.put("token", token);
+        goSend(context, listener, errorListener, URL_FILES_INFO, map);
+    }
+
     private Response.ErrorListener getErrorListener(Context context) {
         return error -> {
             AlertDialog dialog = new AlertDialog.Builder(context)
@@ -93,12 +99,6 @@ public class NetworkController {
         SendRequest sendRequest = new SendRequest(listener, errorListener, URL, map);
         if (queue == null) queue = Volley.newRequestQueue(context);
         queue.add(sendRequest);
-    }
-
-    public void getFilesInfo(Context context, Response.Listener<String> listener, Response.ErrorListener errorListener, String token) {
-        Map<String, String> map = new HashMap<>();
-        map.put("token", token);
-        goSend(context, listener, errorListener, URL_FILES_INFO, map);
     }
 
     private static class SendRequest extends StringRequest {

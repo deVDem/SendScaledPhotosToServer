@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/groupText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ваша группа: 22МР" />
+
+        <TextView
+            android:id="@+id/lessonText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Выберите предмет"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <Spinner
+            android:id="@+id/lessonsSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:entries="@array/lessons" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="addPhotosIntent"
+            android:text="Добавить фотографию" />
+
+        <RadioGroup
+            android:id="@+id/rgQuality"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Выберите качество фотографии"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <RadioButton
+                android:id="@+id/rbHigh"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Высокое" />
+
+            <TextView
+                android:id="@+id/rbTxHigh"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:text="Качество 100% JPG\nАдаптивное разрешение (мин высота 600 px)\nПримерный размер одной фотографии - 1000 КБайт\nРекомендуется только для редких случаев" />
+
+            <RadioButton
+                android:id="@+id/rbMedium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Среднее" />
+
+            <TextView
+                android:id="@+id/rbTxMedium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:text="Качество 90% JPG\nАдаптивное разрешение (мин высота 400 px)\nПримерный размер одной фотографии - 500 КБайт\nРекомендуется" />
+
+            <RadioButton
+                android:id="@+id/rbLow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Низкое" />
+
+            <TextView
+                android:id="@+id/rbTxLow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:text="Качество 90% JPG\nАдаптивное разрешение (мин высота 200 px)\nПримерный размер одной фотографии - 400 КБайт\nРекомендуется только при нехватке места" />
+        </RadioGroup>
+
+        <LinearLayout
+            android:id="@+id/listImages"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="Прикреплённые фотографии"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textNoPhotos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:text="Фотографий нет" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/techInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Здесь будет отображаться техническая информация" />
+
+        <Button
+            android:id="@+id/btnSend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="#f22"
+            android:text="Отправить"
+            android:textColor="#fff" />
+    </LinearLayout>
+</ScrollView>

@@ -77,6 +77,13 @@ public class MainActivity extends AppCompatActivity {
             dialog.show();
         });
         mBtUploadPhotos = findViewById(R.id.btnUploadPhotos);
+        mBtUploadPhotos.setOnClickListener(v -> {
+            mBtUploadPhotos.setEnabled(false);
+            mBtLogOut.setEnabled(false);
+            mBtLeaveGroup.setEnabled(false);
+            startActivity(new Intent(this, UploadPhotosActivity.class));
+            finish();
+        });
         mBtLeaveGroup = findViewById(R.id.btnLeaveGroup);
         mBtLogOut = findViewById(R.id.btnLogout);
         mBtLogOut.setOnClickListener(v -> {
@@ -158,24 +165,37 @@ public class MainActivity extends AppCompatActivity {
         mPbMem.setProgress(0);
         mTxMaxPhotos.setText("Загрузка");
         mNetworkController.getFilesInfo(this, response -> {
-            mTxLogin.setText("Логин: " + mUser.getLogin());
-            mTxEmail.setText("Email: " + mUser.getEmail());
-            mTxPro.setText("PRO-статус: " + (mUser.isPro() ? "активирован" : "нет"));
             try {
                 JSONObject jsonResponse = new JSONObject(response);
-                mTxAllMem.setText("Всего памяти выделено: " + jsonResponse.getString("allText"));
-                mTxAvailMem.setText("Свободно памяти: " + jsonResponse.getString("availText"));
-                int availableSize = jsonResponse.getInt("availableSize");
-                int allSize = jsonResponse.getInt("allSize");
-                int photosMax = jsonResponse.getInt("photosMax");
-                int usedSize = allSize - availableSize;
-                mPbMem.setMax(allSize);
-                mPbMem.setProgress(usedSize);
-                mTxMaxPhotos.setText("Расчитанно на: " + photosMax + " фотографий\n" +
-                        "Это в среднем по " + formatSize(allSize / photosMax));
-                mBtUploadPhotos.setEnabled(true);
-                mBtLogOut.setEnabled(true);
-                mBtLeaveGroup.setEnabled(true);
+                String status = jsonResponse.getString("status");
+                if (status.equals("ok")) {
+                    mTxLogin.setText("Логин: " + mUser.getLogin());
+                    mTxEmail.setText("Email: " + mUser.getEmail());
+                    mTxPro.setText("PRO-статус: " + (mUser.isPro() ? "активирован" : "нет"));
+                    mTxAllMem.setText("Всего памяти выделено: " + jsonResponse.getString("allText"));
+                    mTxAvailMem.setText("Свободно памяти: " + jsonResponse.getString("availText"));
+                    int availableSize = jsonResponse.getInt("availableSize");
+                    int allSize = jsonResponse.getInt("allSize");
+                    int photosMax = jsonResponse.getInt("photosMax");
+                    int usedSize = allSize - availableSize;
+                    mPbMem.setMax(allSize);
+                    mPbMem.setProgress(usedSize);
+                    mTxMaxPhotos.setText("Расчитанно на: " + photosMax + " фотографий\n" +
+                            "Это в среднем по " + formatSize(allSize / photosMax));
+                    mBtUploadPhotos.setEnabled(true);
+                    mBtLogOut.setEnabled(true);
+                    mBtLeaveGroup.setEnabled(true);
+                } else if (status.equals("INVALID_TOKEN")) {
+                    login();
+                } else if (status.equals("NO_TOKEN")) {
+                    Toast.makeText(this, "Произошла ошибка. Выход из аккаунта..", Toast.LENGTH_SHORT).show();
+                    mSettingsController.clearAccount();
+                    startActivity(new Intent(this, SplashActivity.class));
+                    finish();
+                } else {
+                    Toast.makeText(this, "Произошла неизвестная ошибка.", Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, "checkData: " + response, new Exception());
+                }
             } catch (Exception e) {
                 Log.e(TAG, "checkData: ", e);
             }
