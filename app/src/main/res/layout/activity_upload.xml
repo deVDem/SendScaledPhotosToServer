@@ -8,20 +8,11 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="10dp">
-
         <TextView
             android:id="@+id/groupText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Ваша группа: 22МР" />
-
-        <TextView
-            android:id="@+id/lessonText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Выберите предмет"
-            android:textSize="20sp"
-            android:textStyle="bold" />
 
         <Spinner
             android:id="@+id/lessonsSpinner"
@@ -84,7 +75,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="40dp"
-                android:text="Качество 90% JPG\nАдаптивное разрешение (мин высота 200 px)\nПримерный размер одной фотографии - 400 КБайт\nРекомендуется только при нехватке места" />
+                android:text="Качество 90% JPG\nАдаптивное разрешение (мин высота 200 px)\nПримерный размер одной фотографии - 300 КБайт\nРекомендуется только при нехватке места" />
         </RadioGroup>
 
         <LinearLayout

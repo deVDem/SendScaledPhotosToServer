@@ -3,8 +3,8 @@ package ru.devdem.sendscaledphotososerver.helpers.objects;
 import android.graphics.Bitmap;
 
 public class ImageSend {
-    private Bitmap mBitmap;
-    private Bitmap mPreparedBitmap;
+    private String mPreparedBase64;
+    private Bitmap mPreviewBitmap;
     private int preparedSize;
     private int[] dimens = new int[2];
     private int[] preparedDimens = new int[2];
@@ -13,12 +13,20 @@ public class ImageSend {
 
     }
 
-    public Bitmap getPreparedBitmap() {
-        return mPreparedBitmap;
+    public Bitmap getPreviewBitmap() {
+        return mPreviewBitmap;
     }
 
-    public void setPreparedBitmap(Bitmap preparedBitmap) {
-        mPreparedBitmap = preparedBitmap;
+    public void setPreviewBitmap(Bitmap previewBitmap) {
+        mPreviewBitmap = previewBitmap;
+    }
+
+    public String getPreparedBase64() {
+        return mPreparedBase64;
+    }
+
+    public void setPreparedBase64(String preparedBase64) {
+        mPreparedBase64 = preparedBase64;
     }
 
     public int[] getPreparedDimens() {
@@ -27,14 +35,6 @@ public class ImageSend {
 
     public void setPreparedDimens(int[] preparedDimens) {
         this.preparedDimens = preparedDimens;
-    }
-
-    public Bitmap getBitmap() {
-        return mBitmap;
-    }
-
-    public void setBitmap(Bitmap bitmap) {
-        mBitmap = bitmap;
     }
 
     public int getPreparedSize() {

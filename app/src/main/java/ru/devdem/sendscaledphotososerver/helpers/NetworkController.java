@@ -23,6 +23,7 @@ public class NetworkController {
     private String URL_GROUPS_GET = "/groups/get.php";
     private String URL_ACCOUNT_JOIN = "/accounts/join.php";
     private String URL_FILES_INFO = "/files/info.php";
+    private String URL_FILES_SEND = "/files/send.php";
     private static RequestQueue queue;
 
     public static NetworkController getNetworkController() {
@@ -38,6 +39,7 @@ public class NetworkController {
         URL_GROUPS_GET = URL_ROOT + URL_GROUPS_GET;
         URL_ACCOUNT_JOIN = URL_ROOT + URL_ACCOUNT_JOIN;
         URL_FILES_INFO = URL_ROOT + URL_FILES_INFO;
+        URL_FILES_SEND = URL_ROOT + URL_FILES_SEND;
     }
 
     public void getRulesInfo(Context context, Response.Listener<String> listener) {
@@ -99,6 +101,14 @@ public class NetworkController {
         SendRequest sendRequest = new SendRequest(listener, errorListener, URL, map);
         if (queue == null) queue = Volley.newRequestQueue(context);
         queue.add(sendRequest);
+    }
+
+    public void sendPhotos(Context context, Response.Listener<String> listener, Response.ErrorListener errorListener, String token, String s, String toJSON) {
+        Map<String, String> map = new HashMap<>();
+        map.put("token", token);
+        map.put("lesson", s);
+        map.put("imagesJson", toJSON);
+        goSend(context, listener, errorListener, URL_FILES_SEND, map);
     }
 
     private static class SendRequest extends StringRequest {
