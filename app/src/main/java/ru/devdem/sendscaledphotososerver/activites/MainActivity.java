@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -168,33 +169,38 @@ public class MainActivity extends AppCompatActivity {
             try {
                 JSONObject jsonResponse = new JSONObject(response);
                 String status = jsonResponse.getString("status");
-                if (status.equals("ok")) {
-                    mTxLogin.setText("Логин: " + mUser.getLogin());
-                    mTxEmail.setText("Email: " + mUser.getEmail());
-                    mTxPro.setText("PRO-статус: " + (mUser.isPro() ? "активирован" : "нет"));
-                    mTxAllMem.setText("Всего памяти выделено: " + jsonResponse.getString("allText"));
-                    mTxAvailMem.setText("Свободно памяти: " + jsonResponse.getString("availText"));
-                    int availableSize = jsonResponse.getInt("availableSize");
-                    int allSize = jsonResponse.getInt("allSize");
-                    int photosMax = jsonResponse.getInt("photosMax");
-                    int usedSize = allSize - availableSize;
-                    mPbMem.setMax(allSize);
-                    mPbMem.setProgress(usedSize);
-                    mTxMaxPhotos.setText("Расчитанно на: " + photosMax + " фотографий\n" +
-                            "Это в среднем по " + formatSize(allSize / photosMax));
-                    mBtUploadPhotos.setEnabled(true);
-                    mBtLogOut.setEnabled(true);
-                    mBtLeaveGroup.setEnabled(true);
-                } else if (status.equals("INVALID_TOKEN")) {
-                    login();
-                } else if (status.equals("NO_TOKEN")) {
-                    Toast.makeText(this, "Произошла ошибка. Выход из аккаунта..", Toast.LENGTH_SHORT).show();
-                    mSettingsController.clearAccount();
-                    startActivity(new Intent(this, SplashActivity.class));
-                    finish();
-                } else {
-                    Toast.makeText(this, "Произошла неизвестная ошибка.", Toast.LENGTH_SHORT).show();
-                    Log.e(TAG, "checkData: " + response, new Exception());
+                switch (status) {
+                    case "ok":
+                        mTxLogin.setText("Логин: " + mUser.getLogin());
+                        mTxEmail.setText("Email: " + mUser.getEmail());
+                        mTxPro.setText("PRO-статус: " + (mUser.isPro() ? "активирован" : "нет"));
+                        mTxAllMem.setText("Всего памяти выделено: " + jsonResponse.getString("allText"));
+                        mTxAvailMem.setText("Свободно памяти: " + jsonResponse.getString("availText"));
+                        int availableSize = jsonResponse.getInt("availableSize");
+                        int allSize = jsonResponse.getInt("allSize");
+                        int photosMax = jsonResponse.getInt("photosMax");
+                        int usedSize = allSize - availableSize;
+                        mPbMem.setMax(allSize);
+                        mPbMem.setProgress(usedSize);
+                        mTxMaxPhotos.setText("Расчитанно на: " + photosMax + " фотографий\n" +
+                                "Это в среднем по " + formatSize(allSize / photosMax));
+                        mBtUploadPhotos.setEnabled(true);
+                        mBtLogOut.setEnabled(true);
+                        mBtLeaveGroup.setEnabled(true);
+                        break;
+                    case "INVALID_TOKEN":
+                        login();
+                        break;
+                    case "NO_TOKEN":
+                        Toast.makeText(this, "Произошла ошибка. Выход из аккаунта..", Toast.LENGTH_SHORT).show();
+                        mSettingsController.clearAccount();
+                        startActivity(new Intent(this, SplashActivity.class));
+                        finish();
+                        break;
+                    default:
+                        Toast.makeText(this, "Произошла неизвестная ошибка.", Toast.LENGTH_SHORT).show();
+                        Log.e(TAG, "checkData: " + response, new Exception());
+                        break;
                 }
             } catch (Exception e) {
                 Log.e(TAG, "checkData: ", e);
@@ -285,5 +291,10 @@ public class MainActivity extends AppCompatActivity {
             mBtLeaveGroup.setEnabled(true);
         };
         mNetworkController.joinToGroup(this, listener, errorListener, "0", mSettingsController.loadUser().getToken());
+    }
+
+    public void openRules(View v) {
+        startActivity(new Intent(this, RulesActivity.class));
+        finish();
     }
 }

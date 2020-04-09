@@ -47,6 +47,7 @@ public class UploadPhotosActivity extends AppCompatActivity {
     private RadioButton mRbHigh;
     private RadioButton mRbMedium;
     private RadioButton mRbLow;
+    private RadioGroup mRgQuality;
     private LinearLayout mPhotosView;
     private TextView mTxNoPhotos;
     private Button mBtSend;
@@ -110,8 +111,8 @@ public class UploadPhotosActivity extends AppCompatActivity {
         mPhotosView = findViewById(R.id.listImages);
         mTxNoPhotos = findViewById(R.id.textNoPhotos);
         mBtSend = findViewById(R.id.btnSend);
-        RadioGroup rgQuality = findViewById(R.id.rgQuality);
-        rgQuality.setOnCheckedChangeListener((group, checkedId) -> changedQuality(checkedId));
+        mRgQuality = findViewById(R.id.rgQuality);
+        mRgQuality.setOnCheckedChangeListener((group, checkedId) -> changedQuality(checkedId));
         checkPhotos();
         switch (mSettingsController.getLastQuality()) {
             case 1:
@@ -179,6 +180,10 @@ public class UploadPhotosActivity extends AppCompatActivity {
                 Toast.makeText(this, "Вы не указали предмет", Toast.LENGTH_SHORT).show();
                 return;
             }
+            if (mImages.size() == 0) {
+                Toast.makeText(this, "Добавьте фотографию", Toast.LENGTH_SHORT).show();
+                return;
+            }
             AlertDialog dialog = new AlertDialog.Builder(this)
                     .setTitle("Отправка")
                     .setMessage("Пожалуйста, подождите..")
@@ -187,11 +192,24 @@ public class UploadPhotosActivity extends AppCompatActivity {
             dialog.show();
             String json = toJSON();
             mNetworkController.sendPhotos(this, response -> {
-                Log.d(TAG, "onCreate: " + response);
+                try {
+                    JSONObject jsonResponse = new JSONObject(response);
+                    String status = jsonResponse.getString("status");
+                    if (status.equals("ok")) {
+                        onBackPressed();
+                        Toast.makeText(this, "Успешно отправлено", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, "Произошла ошибка: " + jsonResponse.getString("error"), Toast.LENGTH_SHORT).show();
+                    }
+                } catch (Exception e) {
+                    Log.e(TAG, "onCreate: ", e);
+                    Log.d(TAG, "onCreate: " + response);
+                    Toast.makeText(this, "Произошла ошибка: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                }
                 dialog.cancel();
             }, error -> {
                 Log.e(TAG, "onCreate: ", error);
-                Toast.makeText(this, "Произошла ошибка..", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Произошла ошибка: " + error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                 dialog.cancel();
             }, mUser.getToken(), mLessons.get(mSpLessons.getSelectedItemPosition()), json);
         });
@@ -205,15 +223,15 @@ public class UploadPhotosActivity extends AppCompatActivity {
     }
 
     String toJSON() {
-        String sb = "{" +
+        StringBuilder sb = new StringBuilder("{" +
                 "\"count\":" + mImages.size() + "," +
-                "\"images\": [";
+                "\"images\": [");
         for (int i = 0; i < mImages.size(); i++) {
-            sb += "\"" + mImages.get(i).getPreparedBase64() + "\"";
-            if (mImages.size() - 1 != i) sb += ",";
+            sb.append("\"").append(mImages.get(i).getPreparedBase64()).append("\"");
+            if (mImages.size() - 1 != i) sb.append(",");
         }
-        sb += "]" + "}";
-        return sb;
+        sb.append("]" + "}");
+        return sb.toString();
     }
 
     @Override
@@ -260,10 +278,14 @@ public class UploadPhotosActivity extends AppCompatActivity {
             i++;
         }
         mTxNoPhotos.setVisibility(mImages.size() >= 1 ? View.GONE : View.VISIBLE);
-        mBtSend.setEnabled(mImages.size() >= 1);
+        mRgQuality.setVisibility(mImages.size() >= 1 ? View.GONE : View.VISIBLE);
     }
 
     public void addPhotosIntent(View view) {
+        if (mSpLessons.getSelectedItemPosition() == 0) {
+            Toast.makeText(this, "Выберите предмет", Toast.LENGTH_SHORT).show();
+            return;
+        }
         if (mImages.size() < MAX_PHOTOS) {
             Intent intent = new Intent();
             intent.setType("image/*");

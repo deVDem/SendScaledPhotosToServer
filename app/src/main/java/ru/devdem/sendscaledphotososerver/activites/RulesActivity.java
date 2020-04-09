@@ -58,7 +58,7 @@ public class RulesActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(this, FirstActivity.class));
+        startActivity(new Intent(this, SplashActivity.class));
         finish();
     }
 }
